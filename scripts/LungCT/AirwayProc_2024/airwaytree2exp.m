@@ -40,7 +40,7 @@ if isfile(fn_tree)
             % Find transformed node locations in INS space
             N_ins = p.N(:,[3,2,4]) ./ info_h.PixelDimensions;
             N_ins = (info_h.Transform.T' * [ N_ins , ones(np,1) ]')';
-            N_ins = N_ins(:,2:4);
+            N_ins = N_ins(:,1:3);
 
             % Transform points using elastix results
             N_exp = transformPoints(fn_tfi,N_ins(:,1:3)); % results in xyz coordinates
