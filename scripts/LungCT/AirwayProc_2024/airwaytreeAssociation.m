@@ -1,5 +1,5 @@
 % Assigns quantitative values to distal nodes in the airway tree
-function [B,Blabel] = airwaytreeAssociation(B,Blabel,N,voxsz,M,M_label,r,func_flag)
+function [B,Blabel] = airwaytreeAssociation(B,Blabel,N,voxsz,M,M_label,seg,r,func_flag)
 % Inputs:
 %   B           = Branches matrix
 %   Blabel      = labels for columns in B
@@ -7,6 +7,7 @@ function [B,Blabel] = airwaytreeAssociation(B,Blabel,N,voxsz,M,M_label,r,func_fl
 %   voxsz       = voxel dimensions
 %   M           = quantitative maps to associate with airway tree (4D)
 %   M_label     = {1xN} labels of input image(s)
+%   seg         = logical segmentation, same size as M
 %   r           = radius of window
 %   func_flag   = (optional) 1=mean, 2=vol%
 
@@ -16,7 +17,7 @@ j_so = find(strcmp(Blabel,'Strahler'),1);
 j_lobe = find(strcmp(Blabel,'Lobe'),1);
 [nB,nBcol] = size(B);
 nM = size(M,4);
-if nargin<8
+if nargin<9
     if islogical(M)
         func_flag = 2*ones(1,nM);
     else
@@ -53,7 +54,12 @@ for i = 1:soCnts(1)
     for j = 1:Nse
         if index(j,1) > 0 && index(j,2) >0 && index(j,3) >0 
             if index(j,1)<=size(M,1) && index(j,2)<=size(M,2) && index(j,3)<=size(M,3)  % make sure it stays in the boundary 
-                if ~(isnan(M(index(j,1),index(j,2),index(j,3))))     % whether there is data at the point
+                % Check that voxel is in segmentation
+                segflag = true;
+                if ~isempty(seg)
+                    segflag = logical(seg(index(j,1),index(j,2),index(j,3)));
+                end
+                if ~isnan(M(index(j,1),index(j,2),index(j,3))) && segflag   % whether there is data at the point
                     tmpData(num,:) = squeeze(M(index(j,1),index(j,2),index(j,3),:))';    
                     num = num+1;                
                 end
