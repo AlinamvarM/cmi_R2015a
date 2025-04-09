@@ -366,7 +366,7 @@ try
     end
 
     % Register I2E
-    if img(1).flag && img(2).flag && (opts.reg || opts.prm || opts.tprm)
+    if img(1).flag && img(2).flag && (opts.reg || opts.prm || opts.tprm || opts.eprm)
         ins_reg = [];
         elxdir = fullfile(procdir,sprintf('elastix_%s',ID));
         if exist(opts.fn.reg,'file')
@@ -543,7 +543,6 @@ try
             for i = 1:size(prmtranslate,2)
                 prm5(ismember(prm10,prmtranslate{2,i})) = i;
             end
-            clear prm10
 
             % QC PRM
             writeLog(fn_log,'Generating PRM Montage ...\n');
@@ -564,6 +563,15 @@ try
             if isempty(D)
                 writeLog(fn_log,'PRM Report FAILED\n');
             end
+
+            % ePRM
+            if opts.eprm
+                writeLog(fn_log,'Generating ePRM ... ')
+                t = tic;
+                pipeline_ePRM(ID,procdir,prm10,img.label,img.info,true,fn_log)
+                writeLog(fn_log,'%s\n',duration(0,0,toc(t)));
+            end
+            clear prm10
 
             % Calculate tPRM
             if opts.tprm

@@ -238,10 +238,10 @@ for ifn = 1:nf
             dcmdata(j).PixelSpacing = val;
             
             val = [];
-            if isfield(tinfo,'SpacingBetweenSlices')
-                val = abs(tinfo.SpacingBetweenSlices);
-            elseif isfield(tinfo,'SliceThickness')
+            if isfield(tinfo,'SliceThickness')
                 val = tinfo.SliceThickness;
+            elseif isfield(tinfo,'SpacingBetweenSlices')
+                val = abs(tinfo.SpacingBetweenSlices);
             end
             dcmdata(j).SlcThk = val;
             

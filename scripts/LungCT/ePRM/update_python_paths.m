@@ -55,12 +55,6 @@ function python_path = update_python_paths(update_mode)
     
     % Check required packages
     flag = checkRequiredPackages(python_path);
-    % if checkRequiredPackages(python_path) == false
-    %     proceed = input('\nDo you want to continue anyway? [y/N]: ', 's');
-    %     if isempty(proceed) || lower(proceed(1)) ~= 'y'
-    %         error('Required Python packages are missing. Setup cancelled.');
-    %     end
-    % end
     
     % SAVE THE PYTHON PATH FOR FUTURE USE
     setpref('Clintrajan', 'PythonPath', python_path);

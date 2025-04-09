@@ -105,7 +105,7 @@ end
         pan_hd = 20;
         pan_w = 215;
         pan_w_ = pan_w - 2*gap;
-        pan_h = 350;
+        pan_h = 400;
         pan_posy = pan_h - pan_hd - line_step*(1:15);
 
     %% Tab 1: Settings and options
@@ -146,7 +146,8 @@ end
         h.mod.scatnetEmph =    uicheckbox(h.panel_modules,'Position',[gap, pan_posy(10),  pan_w_, line_h],'Text','ScatNet-Emph','Value',opts.scatnetEmph,'ValueChangedFcn',@setOpts,'Tag','scatnetEmph');
         h.mod.saa =            uicheckbox(h.panel_modules,'Position',[gap, pan_posy(11), pan_w_, line_h],'Text','SAA','Value',opts.saa,'ValueChangedFcn',@setOpts,'Tag','saa');
         h.mod.prm =            uicheckbox(h.panel_modules,'Position',[gap, pan_posy(12), pan_w_, line_h],'Text','PRM','Value',opts.prm,'ValueChangedFcn',@setOpts,'Tag','prm');
-        h.mod.tprm =           uicheckbox(h.panel_modules,'Position',[gap, pan_posy(13), pan_w_, line_h],'Text','tPRM','Value',opts.tprm,'ValueChangedFcn',@setOpts,'Tag','tprm');
+        h.mod.eprm =           uicheckbox(h.panel_modules,'Position',[gap, pan_posy(13), pan_w_, line_h],'Text','ePRM','Value',opts.eprm,'ValueChangedFcn',@setOpts,'Tag','eprm');
+        h.mod.tprm =           uicheckbox(h.panel_modules,'Position',[gap, pan_posy(14), pan_w_, line_h],'Text','tPRM','Value',opts.tprm,'ValueChangedFcn',@setOpts,'Tag','tprm');
 
     % Panel: Registration Options
         panx = panx + gap + pan_w;

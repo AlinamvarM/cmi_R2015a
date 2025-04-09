@@ -5,6 +5,10 @@ function [T,p] = dipg_case(ID,TP,C,p)
 %   TP = Datestamp (e.g. 20230421)
 %   C = Catalog entries for this case (cell array)
 %   p = processing options (struct)
+%
+%   
+
+
 T = table();
 
 bl_chk = isempty(p.fn_ref);
@@ -157,7 +161,7 @@ if ~isfile(p.fn_ref)
 end
 
 % Find baseline tumorVOI
-fn_voi0 = fullfile(p.regdir,strcat(baseID,'.reg.',{'FLAIR','FLAIR_post'},'.tumorVOI.nii.gz'));
+fn_voi0 = fullfile(p.regdir,strcat(baseID,'.reg.',{'FLAIR','FLAIR_post','T2w'},'.tumorVOI.nii.gz'));
 fn_voi0 = fn_voi0{isfile(fn_voi0)};
 if isempty(fn_voi0)
     fprintf('%s : Baseline tumorVOI not found: %s\n',caseID,baseID); return;

@@ -1,14 +1,15 @@
 function opts = init_pipeline_opts(varargin)
 
 opts = struct( ...
-              'dcm_path',       ''      ,... % Location of catalog file
-              'save_path',      ''      ,... % Location to save pipeline results (for GL, must be on Turbo)
-              'par_size',       5       ,... % parallel processes for local analysis
-              'cluster',        'batch' ,... % Where to process the data: 'GL', 'batch', or 'debug'
-              'cluster_type',   'auto'  ,... % GL cluster type to use: 'largemem', 'standard'
-              'mem',            24      ,... % GL memory needed per process
-              'nnodes',         1       ,... % GL number of nodes (only for standard)
-              'username',       ''      ,... % GL your uniquename for email notifications
+              'dcm_path',       ''          ,... % Location of catalog file
+              'save_path',      ''          ,... % Location to save pipeline results (for GL, must be on Turbo)
+              'par_size',       5           ,... % parallel processes for local analysis
+              'cluster',        'batch'     ,... % Where to process the data: 'GL', 'batch', or 'debug'
+              'acct',           'cgalban0'  ,... % Account used for SBATCH
+              'cluster_type',   'standard'  ,... % GL cluster type to use: 'largemem', 'standard'
+              'mem',            24          ,... % GL memory needed per process
+              'nnodes',         1           ,... % GL number of nodes (only for standard)
+              'username',       ''          ,... % GL your uniquename for email notifications
               ...
               'unreg',          true    ,... % MODULE unregistered stats for Exp/Ins
               'totalseg',       false   ,... % MODULE TotalSegmentator
@@ -20,9 +21,10 @@ opts = struct( ...
               'reg',            true    ,... % MODULE register Ins to Exp
               'scatnetEmph',    true    ,... % MODULE scatternet Emph map
               'prm',            true    ,... % MODULE PRM analysis
-              'tprm',           true    ,... % MODULE tPRM analysis
+              'eprm',           false   ,... % MODULE ePRM analysis
+              'tprm',           false   ,... % MODULE tPRM analysis
               'dBlood',         true    ,... % MODULE generation of dBlood map
-              'saa',            true    ,... % MODULE Stratified Axial Analysis
+              'saa',            false   ,... % MODULE Stratified Axial Analysis
               ...
               'quickreg',       false   ,... % OPTION to skip last step in registration for speed
               'orient_check',   true    ,... % OPTION to auto-correct image orientation

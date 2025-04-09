@@ -1,5 +1,12 @@
 function visualize_eltree_from_python(tree_elpi, X, finalCTAtable, feature_name, output_path)
     % Create Python script for visualization
+
+    % Determine relevant file names
+    savepath = fileparts(output_path);
+    fn_script = fullfile(savepath, 'temp_visualize_eltree.py');
+    fn_input = fullfile(savepath, 'temp_viz_input.mat');
+    fn_features = fullfile(savepath, 'temp_feature_name.txt');
+
     python_path = update_python_paths();
     python_script = sprintf([...
         'import numpy as np\n',...
@@ -172,7 +179,7 @@ function visualize_eltree_from_python(tree_elpi, X, finalCTAtable, feature_name,
         '    color_values = data["color_values"].flatten()\n',...
         '    \n',...
         '    # Get feature name from text file\n',...
-        '    with open("temp_feature_name.txt", "r") as f:\n',...
+        '    with open("%s", "r") as f:\n',...
         '        feature_name = f.read().strip()\n',...
         '    \n',...
         '    print(f"Feature name: {feature_name}")\n',...
@@ -182,14 +189,10 @@ function visualize_eltree_from_python(tree_elpi, X, finalCTAtable, feature_name,
         '\n',...
         'if __name__ == "__main__":\n',...
         '    import sys\n',...
-        '    process_tree_data(sys.argv[1], sys.argv[2])\n']);
-    
-    % Get current working directory
-    current_dir = pwd;
+        '    process_tree_data(sys.argv[1], sys.argv[2])\n'],strrep(fn_features,'\','\\'));
     
     % Save Python script
-    script_file = fullfile(current_dir, 'temp_visualize_eltree.py');
-    fid = fopen(script_file, 'w');
+    fid = fopen(fn_script, 'w');
     fprintf(fid, '%s', python_script);
     fclose(fid);
     
@@ -203,27 +206,23 @@ function visualize_eltree_from_python(tree_elpi, X, finalCTAtable, feature_name,
         color_values = table2array(finalCTAtable(:, feature_idx(1)));
     end
     
-    % Prepare input and output files with full paths
-    input_file = fullfile(current_dir, 'temp_viz_input.mat');
-    
     % Extract NodePositions and Edges from tree_elpi
     NodePositions = tree_elpi.NodePositions;
     Edges = tree_elpi.Edges;
     
     % Save feature name as a text file
-    feature_name_file = fullfile(current_dir, 'temp_feature_name.txt');
-    fid = fopen(feature_name_file, 'w');
+    fid = fopen(fn_features, 'w');
     fprintf(fid, '%s', feature_name);
     fclose(fid);
     
     % Save variables for Python
-    save(input_file, 'X', 'NodePositions', 'Edges', 'color_values');
+    save(fn_input, 'X', 'NodePositions', 'Edges', 'color_values');
     
     % Prepare command with full paths
     command = sprintf('"%s" "%s" "%s" "%s"', ...
         python_path, ...
-        script_file, ...
-        input_file, ...
+        fn_script, ...
+        fn_input, ...
         output_path);
     
     % Execute Python script
@@ -238,9 +237,9 @@ function visualize_eltree_from_python(tree_elpi, X, finalCTAtable, feature_name,
     end
     
     % Clean up temporary files
-    delete(input_file);
-    delete(script_file);
-    delete(feature_name_file);
+    delete(fn_input);
+    delete(fn_script);
+    delete(fn_features);
     
     fprintf('Tree visualization saved to %s\n', output_path);
 end

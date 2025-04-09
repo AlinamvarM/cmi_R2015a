@@ -62,7 +62,7 @@ if nargin~=2
 
     % Write SBATCH file
     SBopts = {'partition',opts.Partition, 'cores',cores, 'mem',mem, 'walltime',walltime,...
-        'username',opts.username, 'inputs_fname',fname_inputs,'acctname','cgalban0'};
+        'username',opts.username, 'inputs_fname',fname_inputs,'acctname',opts.Account      };
     if opts.Nodes > 1
         SBopts = [SBopts,{'array',opts.Nodes}];
     end
@@ -214,6 +214,7 @@ addRequired(p,'static_flag',@islogical);
 addParameter(p,'Nodes',1,@isscalar);
 addParameter(p,'ProcessTime',60,@isscalar);
 addParameter(p,'ProcessMemory',6,@isscalar);
+addParameter(p,'Account','cgalban0',@(x)ismember(x,{'cgalban0','cgalban1','cgalban99'}))
 addParameter(p,'Partition','auto',@(x)ismember(x,{'auto','standard','largemem'}));
 addParameter(p,'mods',{},@iscellstr);
 addParameter(p,'TimeStamp','',@ischar);
